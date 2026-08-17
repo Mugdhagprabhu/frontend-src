@@ -1,42 +1,36 @@
+/** Clinical Cartography: every route is served within one disciplined command shell so operational context is never lost. */
+import { Route, Switch } from "wouter";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AppShell } from "./components/AppShell";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-
+import Dashboard from "./pages/Dashboard";
+import Inventory from "./pages/Inventory";
+import Procurement from "./pages/Procurement";
+import Shipments from "./pages/Shipments";
+import Alerts from "./pages/Alerts";
+import Insights from "./pages/Insights";
+import OperationsReference from "./pages/OperationsReference";
+import NotFound from "./pages/NotFound";
 
 function Router() {
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
-  );
+  return <AppShell><Switch>
+    <Route path="/" component={Dashboard} />
+    <Route path="/inventory" component={Inventory} />
+    <Route path="/procurement" component={Procurement} />
+    <Route path="/shipments" component={Shipments} />
+    <Route path="/alerts" component={Alerts} />
+    <Route path="/insights" component={Insights} />
+    <Route path="/facilities" component={() => <OperationsReference kind="facilities" />} />
+    <Route path="/vendors" component={() => <OperationsReference kind="vendors" />} />
+    <Route path="/reports" component={() => <OperationsReference kind="reports" />} />
+    <Route path="/audit" component={() => <OperationsReference kind="audit" />} />
+    <Route path="/settings" component={() => <OperationsReference kind="settings" />} />
+    <Route component={NotFound} />
+  </Switch></AppShell>;
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
-function App() {
-  return (
-    <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+export default function App() {
+  return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster richColors position="bottom-right" closeButton /><Router /></TooltipProvider></ThemeProvider></ErrorBoundary>;
 }
-
-export default App;
