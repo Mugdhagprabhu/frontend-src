@@ -14,9 +14,80 @@ type Kind = keyof typeof config;
 
 export default function OperationsReference({ kind }: { kind: Kind }) {
   const item = config[kind]; const Icon = item.icon;
-  if (kind === "facilities") return <div className="page-enter max-w-[1640px]"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><section className="surface-panel overflow-hidden"><div className="flex items-center gap-3 border-b border-[#dce8f0] p-5"><span className="grid h-9 w-9 place-items-center rounded bg-[#eaf5fc] text-[#1769aa]"><Building2 size={18} /></span><div><p className="text-[14px] font-bold text-[#102a43]">Monitored facilities</p><p className="mt-0.5 text-xs text-[#64748b]">Availability is calculated from the latest facility stock records.</p></div></div><div className="overflow-x-auto"><table className="w-full min-w-[720px] text-left"><thead className="bg-[#f8fcfe]"><tr className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#6f899d]"><th className="px-5 py-3.5">Facility</th><th className="px-4 py-3.5">Type</th><th className="px-4 py-3.5">Availability</th><th className="px-4 py-3.5">Critical medicines</th><th className="px-5 py-3.5">Risk</th></tr></thead><tbody>{facilities.map((facility) => <tr key={facility.id} className="border-t border-[#edf3f6]"><td className="px-5 py-4"><p className="text-[13px] font-bold text-[#102a43]">{facility.name}</p><p className="mt-1 font-mono text-[10px] text-[#71879a]">{facility.code}</p></td><td className="px-4 py-4 text-[12px] font-medium text-[#426076]">{facility.type}</td><td className="px-4 py-4"><p className="data-number text-[13px] font-bold text-[#0b4f88]">{facility.availability}%</p></td><td className="data-number px-4 py-4 text-[12px] font-bold text-[#102a43]">{facility.criticalDrugs}</td><td className="px-5 py-4"><StatusBadge status={facility.risk === "Elevated" ? "critical" : facility.risk === "Watch" ? "warning" : "healthy"} label={facility.risk} /></td></tr>)}</tbody></table></div></section></div>;
-  if (kind === "vendors") return <div className="page-enter max-w-[1640px]"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><section className="surface-panel overflow-hidden"><div className="border-b border-[#dce8f0] p-5"><SectionHeading label="Qualified supply partners" title="Vendor coverage" detail="Vendor information is surfaced by the supply service when configured." /></div><div className="divide-y divide-[#edf3f6]">{[{ name: "Cipla Health", category: "Analgesics", orders: 6 }, { name: "Zydus Lifesciences", category: "Antibiotics", orders: 4 }, { name: "Apex Pharmaceuticals", category: "Essential medicines", orders: 3 }].map((vendor) => <div key={vendor.name} className="flex items-center justify-between px-5 py-4"><div><p className="text-[13px] font-bold text-[#102a43]">{vendor.name}</p><p className="mt-1 text-[11px] text-[#64748b]">{vendor.category}</p></div><div className="text-right"><p className="data-number text-sm font-bold text-[#0b4f88]">{vendor.orders}</p><p className="label-kicker mt-1">Active orders</p></div></div>)}</div></section></div>;
-  if (kind === "audit") return <div className="page-enter max-w-[1640px]"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><section className="surface-panel p-5 sm:p-6"><SectionHeading label="Current client context" title="Event audit capability" detail="Live audit records depend on the connected service's event retention policy." /><div className="mt-5 grid gap-3 sm:grid-cols-3">{[{ title: "Identity headers", value: "Configured on request" }, { title: "Operation logging", value: "Backend-owned" }, { title: "Client actions", value: "Toasts + retriable UI" }].map((entry) => <div key={entry.title} className="rounded-md border border-[#dce8f0] bg-white p-4"><p className="label-kicker">{entry.title}</p><p className="mt-2 text-sm font-bold text-[#102a43]">{entry.value}</p></div>)}</div></section></div>;
-  if (kind === "settings") return <div className="page-enter max-w-[1640px]"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><section className="grid gap-5 lg:grid-cols-2"><article className="surface-panel p-5 sm:p-6"><SectionHeading label="Current identity" title="Client request context" /><dl className="mt-5 space-y-3 text-sm"><div className="flex justify-between gap-5 border-b border-[#edf3f6] pb-3"><dt className="text-[#64748b]">Role header</dt><dd className="font-semibold text-[#102a43]">Government operations</dd></div><div className="flex justify-between gap-5 border-b border-[#edf3f6] pb-3"><dt className="text-[#64748b]">Facility scope</dt><dd className="font-semibold text-[#102a43]">State warehouse</dd></div><div className="flex justify-between gap-5"><dt className="text-[#64748b]">Transport security</dt><dd className="font-semibold text-[#16803c]">HTTPS required</dd></div></dl></article><article className="surface-panel p-5 sm:p-6"><SectionHeading label="Service wiring" title="Environment configuration" detail="The frontend reads public Vite environment variables at build time." /><div className="mt-5 flex items-start gap-3 rounded-md border border-sky-200 bg-sky-50 p-4"><KeyRound size={18} className="mt-0.5 shrink-0 text-[#1769aa]" /><p className="text-xs leading-5 text-[#426076]">Set <code className="rounded bg-white px-1 font-mono text-[10px]">VITE_API_URL</code> or per-service URLs to leave demo data mode. Authentication headers are supplied from public deployment configuration.</p></div></article></section></div>;
-  return <div className="page-enter max-w-[1640px]"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><EmptyOperationalState icon={<Icon size={22} />} title="Report service is not configured" detail="This frontend is ready to display report outputs when the reporting endpoint is published. Operational views remain available through Dashboard, Inventory, Procurement, Shipments, Alerts, and AI Insights." /></div>;
+  if (kind === "facilities") return <div className="page-enter max-w-[1640px] text-white">
+    <PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} />
+    <section className="surface-panel overflow-hidden border border-[#223c47] bg-[#13242b]">
+      <div className="flex items-center gap-3 border-b border-[#223c47] p-5">
+        <span className="grid h-9 w-9 place-items-center rounded bg-[#173b37] text-[#00f0a0]"><Building2 size={18} /></span>
+        <div><p className="text-[14px] font-bold text-white">Monitored facilities</p><p className="mt-0.5 text-xs text-[#cbd5e1]">Availability is calculated from the latest facility stock records.</p></div>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px] text-left">
+          <thead className="bg-[#0d191f]">
+            <tr className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#9bb3c1]">
+              <th className="px-5 py-3.5">Facility</th><th className="px-4 py-3.5">Type</th><th className="px-4 py-3.5">Availability</th><th className="px-4 py-3.5">Critical medicines</th><th className="px-5 py-3.5">Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {facilities.map((facility) => (
+              <tr key={facility.id} className="border-t border-[#223c47] hover:bg-[#1a323c]">
+                <td className="px-5 py-4"><p className="text-[13px] font-bold text-white">{facility.name}</p><p className="mt-1 font-mono text-[10px] text-[#9bb3c1]">{facility.code}</p></td>
+                <td className="px-4 py-4 text-[12px] font-medium text-[#cbd5e1]">{facility.type}</td>
+                <td className="px-4 py-4"><p className="data-number text-[13px] font-bold text-[#00f0a0]">{facility.availability}%</p></td>
+                <td className="data-number px-4 py-4 text-[12px] font-bold text-white">{facility.criticalDrugs}</td>
+                <td className="px-5 py-4"><StatusBadge status={facility.risk === "Elevated" ? "critical" : facility.risk === "Watch" ? "warning" : "healthy"} label={facility.risk} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>;
+
+  if (kind === "vendors") return <div className="page-enter max-w-[1640px] text-white">
+    <PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} />
+    <section className="surface-panel overflow-hidden border border-[#223c47] bg-[#13242b]">
+      <div className="border-b border-[#223c47] p-5"><SectionHeading label="Qualified supply partners" title="Vendor coverage" detail="Vendor information is surfaced by the supply service when configured." /></div>
+      <div className="divide-y divide-[#223c47]">
+        {[{ name: "Cipla Health", category: "Analgesics", orders: 6 }, { name: "Zydus Lifesciences", category: "Antibiotics", orders: 4 }, { name: "Apex Pharmaceuticals", category: "Essential medicines", orders: 3 }].map((vendor) => (
+          <div key={vendor.name} className="flex items-center justify-between px-5 py-4 hover:bg-[#1a323c]">
+            <div><p className="text-[13px] font-bold text-white">{vendor.name}</p><p className="mt-1 text-[11px] text-[#cbd5e1]">{vendor.category}</p></div>
+            <div className="text-right"><p className="data-number text-sm font-bold text-[#00f0a0]">{vendor.orders}</p><p className="label-kicker mt-1 text-[#9bb3c1]">Active orders</p></div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>;
+
+  if (kind === "audit") return <div className="page-enter max-w-[1640px] text-white">
+    <PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} />
+    <section className="surface-panel p-5 sm:p-6 border border-[#223c47] bg-[#13242b]">
+      <SectionHeading label="Current client context" title="Event audit capability" detail="Live audit records depend on the connected service's event retention policy." />
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        {[{ title: "Identity headers", value: "Configured on request" }, { title: "Operation logging", value: "Backend-owned" }, { title: "Client actions", value: "Toasts + retriable UI" }].map((entry) => (
+          <div key={entry.title} className="rounded-md border border-[#223c47] bg-[#0d191f] p-4"><p className="label-kicker text-[#00f0a0]">{entry.title}</p><p className="mt-2 text-sm font-bold text-white">{entry.value}</p></div>
+        ))}
+      </div>
+    </section>
+  </div>;
+
+  if (kind === "settings") return <div className="page-enter max-w-[1640px] text-white">
+    <PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} />
+    <section className="grid gap-5 lg:grid-cols-2">
+      <article className="surface-panel p-5 sm:p-6 border border-[#223c47] bg-[#13242b]">
+        <SectionHeading label="Current identity" title="Client request context" />
+        <dl className="mt-5 space-y-3 text-sm">
+          <div className="flex justify-between gap-5 border-b border-[#223c47] pb-3"><dt className="text-[#cbd5e1]">Role header</dt><dd className="font-semibold text-white">Government operations</dd></div>
+          <div className="flex justify-between gap-5 border-b border-[#223c47] pb-3"><dt className="text-[#cbd5e1]">Facility scope</dt><dd className="font-semibold text-white">State warehouse</dd></div>
+          <div className="flex justify-between gap-5"><dt className="text-[#cbd5e1]">Transport security</dt><dd className="font-semibold text-[#00f0a0]">HTTPS required</dd></div>
+        </dl>
+      </article>
+      <article className="surface-panel p-5 sm:p-6 border border-[#223c47] bg-[#13242b]">
+        <SectionHeading label="Service wiring" title="Environment configuration" detail="The frontend reads public Vite environment variables at build time." />
+        <div className="mt-5 flex items-start gap-3 rounded-md border border-[#1b4356] bg-[#0e2938] p-4"><KeyRound size={18} className="mt-0.5 shrink-0 text-[#00f0a0]" /><p className="text-xs leading-5 text-[#cbd5e1]">Set <code className="rounded bg-[#0d191f] border border-[#223c47] px-1 font-mono text-[10px] text-white">VITE_API_URL</code> or per-service URLs to leave demo data mode. Authentication headers are supplied from public deployment configuration.</p></div>
+      </article>
+    </section>
+  </div>;
+
+  return <div className="page-enter max-w-[1640px] text-white"><PageHeader eyebrow={item.eyebrow} title={item.title} subtitle={item.subtitle} /><EmptyOperationalState icon={<Icon size={22} />} title="Report service is not configured" detail="This frontend is ready to display report outputs when the reporting endpoint is published. Operational views remain available through Dashboard, Inventory, Procurement, Shipments, Alerts, and AI Insights." /></div>;
 }
