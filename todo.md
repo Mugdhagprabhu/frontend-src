@@ -1,0 +1,4 @@
+- [x] Inspect the Dashboard article target and determine the animation interaction model.
+- [x] Add Anime.js and implement a first-class, accessible dashboard animation.
+- [x] Validate the production build and confirm the browser console remains clear after the dashboard animation change.
+- [ ] Save a new published checkpoint with the completed revision.
