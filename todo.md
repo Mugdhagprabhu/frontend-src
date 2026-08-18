@@ -1,6 +1,6 @@
 - [x] Inspect the Dashboard article target and determine the animation interaction model.
 - [x] Add Anime.js and implement a first-class, accessible dashboard animation.
 - [x] Validate the production build and confirm the browser console remains clear after the dashboard animation change.
-- [ ] Reconcile the Dashboard, package manifest, and dependency lock conflicts with the incoming GitHub update.
-- [ ] Restart the application and confirm dashboard and stylesheet reloads succeed.
+- [x] Reconcile the Dashboard, package manifest, and dependency lock conflicts with the incoming GitHub update.
+- [x] Restart the application and confirm dashboard and stylesheet reloads succeed.
 - [ ] Save a new published checkpoint with the completed revision.
